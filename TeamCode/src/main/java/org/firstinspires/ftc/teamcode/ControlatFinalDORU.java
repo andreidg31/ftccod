@@ -57,10 +57,13 @@ public class ControlatFinalDORU extends LinearOpMode {
     public boolean isRunning = false;
     public boolean isFlipped = false;
     public boolean isBasculat = false;
+    public boolean isCaught   = false;
+    public boolean isUp       = false;
     public  ElapsedTime time = new ElapsedTime();
     public  ElapsedTime time_flip = new ElapsedTime();
-
+    public  ElapsedTime time_relic = new ElapsedTime();
     public  ElapsedTime time_bascula = new ElapsedTime();
+
     public void Drive() {
 
 //        double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
@@ -90,22 +93,7 @@ public class ControlatFinalDORU extends LinearOpMode {
         robot.back_right_motor.setPower(-v4);
     }
 
-    public void DriveStanga() {
-        if(gamepad1.x) {
-            double r = Math.hypot(-gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
-            double rightX = gamepad1.right_stick_x;
-            final double v1 = r * Math.cos(robotAngle + Math.PI/2) - rightX;
-            final double v2 = r * Math.sin(robotAngle + Math.PI/2) + rightX;
-            final double v3 = r * Math.sin(robotAngle + Math.PI/2) - rightX;
-            final double v4 = r * Math.cos(robotAngle + Math.PI/2) + rightX;
 
-            robot.front_left_motor.setPower(-v1);
-            robot.front_right_motor.setPower(v2);
-            robot.back_left_motor.setPower(-v3);
-            robot.back_right_motor.setPower(v4);
-        }
-    }
 //    }
 //    public void rotor(){
 //        if(time.seconds()>1) {
@@ -128,91 +116,128 @@ public class ControlatFinalDORU extends LinearOpMode {
 //        }
 //    }
 //
-//    public void rotor_b(){
-//        if(gamepad1.right_trigger > 0 || gamepad1.left_trigger > 0){
-//            if(gamepad1.right_trigger > 0) {
-//                robot.rotorDreapta.setPower(-1);
-//                robot.rotorStanga.setPower(1);
-//            }
-//            else{
-//                robot.rotorDreapta.setPower(1);
-//                robot.rotorStanga.setPower(-1);
-//            }
-//        }
-//        else{
-//            robot.rotorDreapta.setPower(0);
-//            robot.rotorStanga.setPower(0);
-//        }
-//    }
-  /*  public void Catch(){
-        if(gamepad1.a) {
-            if (isOpen == false) {
-                robot.left_claw.setPosition(0.5);
-                robot.right_claw.setPosition(0.4);
-                sleep(250);
-                isOpen = true;
-            } else {
-                robot.left_claw.setPosition(0.65);
-                robot.right_claw.setPosition(0.25);
-                sleep(250);
-                isOpen = false;
+    public void rotor_b(){
+        if(gamepad1.right_trigger > 0 || gamepad1.left_trigger > 0){
+            if(gamepad1.right_trigger > 0) {
+                robot.rotorDreapta.setPower(-1);
+                robot.rotorStanga.setPower(1);
+            }
+            else{
+                robot.rotorDreapta.setPower(1);
+                robot.rotorStanga.setPower(-1);
             }
         }
-        //sleep(500);
+        else{
+            robot.rotorDreapta.setPower(0);
+            robot.rotorStanga.setPower(0);
+        }
     }
-*/
-//    public void Elevator(){
-//        if(gamepad1.dpad_down || gamepad1.dpad_up){
-//            if(gamepad1.dpad_up)
-//                robot.elevator_motor.setPower(-0.8);
-//            if(gamepad1.dpad_down)
-//                robot.elevator_motor.setPower(0.1);
-//        }
-//        else
-//            robot.elevator_motor.setPower(0);
-//    }
-//
-//    public void Flip(){
-//        if(time_flip.seconds() > 1){
-//            if(gamepad1.right_bumper || gamepad1.left_bumper || gamepad1.y){
-//                time_flip.reset();
-//                if(gamepad1.y){
-//                    robot.flip.setPosition(0.0);
-//                    return;
-//                }
-//                if(gamepad1.right_bumper){
-//                        robot.flip.setPosition(0.06);
-//                    return;
-//                }
-//                if(gamepad1.left_bumper){
-//                    robot.flip.setPosition(0.05);
-//                    return;
-//                }
-//
-//            }
-//
-//        }
-//    }
-//
-//
-//    public void bascula(){
-//        if(time_bascula.seconds() > 1){
-//            if(gamepad1.x){
-//                time_bascula.reset();
-//                if(isBasculat == false){
-//                    robot.bascula.setPosition(0.8);
-//                    isBasculat = true;
-//                }
-//                else{
-//                    robot.bascula.setPosition(0);
-//                    isBasculat = false;
-//                }
+//    public void Catch(){
+//        if(gamepad1.a) {
+//            if (isOpen == false) {
+//                robot.left_claw.setPosition(0.5);
+//                robot.right_claw.setPosition(0.4);
+//                sleep(250);
+//                isOpen = true;
+//            } else {
+//                robot.left_claw.setPosition(0.65);
+//                robot.right_claw.setPosition(0.25);
+//                sleep(250);
+//                isOpen = false;
 //            }
 //        }
+//        //sleep(500);
 //    }
-//
-//
-//   // @Override
+
+    public void Elevator(){
+        if(gamepad1.dpad_down || gamepad1.dpad_up){
+            if(gamepad1.dpad_up)
+                robot.elevator_motor.setPower(-0.8);
+            if(gamepad1.dpad_down)
+                robot.elevator_motor.setPower(0.1);
+        }
+        else
+            robot.elevator_motor.setPower(0);
+    }
+
+    public void Flip(){
+        if(time_flip.seconds() > 1){
+            if(gamepad1.right_bumper || gamepad1.left_bumper || gamepad1.y){
+                time_flip.reset();
+                if(gamepad1.y){
+                    robot.flip.setPosition(0.0);
+                    return;
+                }
+                if(gamepad1.right_bumper){
+                        robot.flip.setPosition(0.06);
+                    return;
+                }
+                if(gamepad1.left_bumper){
+                    robot.flip.setPosition(0.05);
+                    return;
+                }
+
+            }
+
+        }
+    }
+
+
+    public void bascula(){
+        if(time_bascula.seconds() > 1){
+            if(gamepad1.x){
+                time_bascula.reset();
+                if(isBasculat == false){
+                    robot.bascula.setPosition(0.8);
+                    isBasculat = true;
+                }
+                else{
+                    robot.bascula.setPosition(0);
+                    isBasculat = false;
+                }
+            }
+        }
+    }
+
+    public void Extend(){
+
+        if(gamepad2.left_bumper){
+            robot.motorExtender.setPower(0.6);
+        }
+        else if(gamepad2.right_bumper){
+            robot.motorExtender.setPower(-0.6);
+        }
+    }
+
+    public void placeRelic(){
+
+        if(time_relic.seconds()>1){
+
+            if(gamepad2.left_trigger>0){
+                time_relic.reset();
+                if(isUp){
+                    robot.relicArm.setPosition(0);
+                    isUp = false;
+                }
+                else{
+                    robot.relicArm.setPosition(1);
+                    isUp = true;
+                }
+            }
+            else if(gamepad2.right_trigger>0){
+                time_relic.reset();
+                if(isCaught){
+                    robot.relicClaw.setPosition(0);
+                    isCaught = false;
+                }
+                else{
+                    robot.relicClaw.setPosition(0);
+                    isCaught = true;
+                }
+            }
+        }
+    }
+   // @Override
 
 
     public void runOpMode() throws InterruptedException {
@@ -230,11 +255,12 @@ public class ControlatFinalDORU extends LinearOpMode {
         time.reset();
         time_flip.reset();
         time_bascula.reset();
+        time_relic.reset();
 
         time.startTime();
         time_flip.startTime();
         time_bascula.startTime();
-
+        time_relic.startTime();
         while (opModeIsActive()) {
             telemetry.addData("time sec ",time.seconds());
             telemetry.addData("time_flip sec ", time_flip.seconds());
@@ -242,11 +268,12 @@ public class ControlatFinalDORU extends LinearOpMode {
             telemetry.update();
             Drive();
             //robot.front_left_motor.getConnectionInfo()
-//            rotor_b();
-//            Elevator();
-//            Flip();
-//            bascula();
-          //  Catch();
+            rotor_b();
+            Elevator();
+            Flip();
+            bascula();
+            Extend();
+            placeRelic();
             idle();
         }
     }

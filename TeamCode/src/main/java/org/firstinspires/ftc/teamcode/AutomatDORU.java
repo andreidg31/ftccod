@@ -102,7 +102,7 @@ public class AutomatDORU extends LinearOpMode {
         waitForStart();
 
         robot.scula.setPosition(1);
-        sleep(500);
+        sleep(1500);
         int red  = robot.color_sensor_scula.red();
         int blue = robot.color_sensor_scula.blue();
         if(red >blue){
@@ -112,9 +112,9 @@ public class AutomatDORU extends LinearOpMode {
             sleep(200);
         }
         else{
-            robot.turnRobot(HardwareFinalDORU.Directions.LEFT,0.6);
-            sleep(200);
             robot.turnRobot(HardwareFinalDORU.Directions.RIGHT,0.6);
+            sleep(200);
+            robot.turnRobot(HardwareFinalDORU.Directions.LEFT,0.6);
             sleep(200);
         }
         sleep(500);

@@ -35,7 +35,9 @@ public class HardwareFinalDORU
     public DcMotor  back_right_motor  = null;
     public DcMotor  rotorStanga       = null;
     public DcMotor  rotorDreapta      = null;
-//    public DcMotor  elevator_motor    = null;
+    public DcMotor  elevator_motor    = null;
+    public DcMotor  motorExtender     = null;
+
     public Servo flip              = null;
     public Servo scula             = null; // Pentru ca se scoala si se culca
     public Servo bascula           = null;
@@ -110,8 +112,9 @@ public class HardwareFinalDORU
         back_right_motor  = hw.dcMotor.get("back_right_motor");
         rotorStanga       = hw.dcMotor.get("rotorStanga");
         rotorDreapta      = hw.dcMotor.get("rotorDreapta");
+        motorExtender     = hw.dcMotor.get("motorExtender");
         gyro              = hw.gyroSensor.get("gyro");
-        //elevator_motor    = hw.dcMotor.get("elevator_motor");
+        elevator_motor    = hw.dcMotor.get("elevator_motor");
         flip              = hw.servo.get("flip");
        // push_cube         = hw.servo.get("push_cube");
         bascula           = hw.servo.get("bascula");
@@ -124,10 +127,10 @@ public class HardwareFinalDORU
         front_right_motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         back_left_motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         back_right_motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        rotorStanga.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        rotorDreapta.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        elevator_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        rotorStanga.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rotorDreapta.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevator_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorExtender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         front_left_motor.setDirection(DcMotorSimple.Direction.REVERSE);
         front_right_motor.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -139,6 +142,7 @@ public class HardwareFinalDORU
         scula.setPosition(0);
         relicArm.setPosition(0);
         relicClaw.setPosition(1);
+
         color_sensor_scula.enableLed(false);
         color_sensor_under.enableLed(false);
 
